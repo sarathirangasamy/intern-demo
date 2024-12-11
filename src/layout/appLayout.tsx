@@ -1,59 +1,31 @@
-import './styles.css';
+import "./styles.css";
 
-import React, { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
+import Header from "./header";
+import SideBar from "./side-nav";
 
 export const AppLayout: React.FC = () => {
   const [navCollapsed, setNavCollapsed] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  const getLayoutGutter = () => {
-    return isMobile ? '0' : navCollapsed ? '80px' : '250px'; // Adjusted for consistent CSS units
-  };
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   return (
-    <div className="app-layout">
-      <header className="header">
-        <div className="logo">My App</div>
-        <nav className="header-nav">
-          {/* Add navigation links or buttons here */}
-          <button onClick={() => setNavCollapsed((prev) => !prev)}>
-            {navCollapsed ? 'Expand' : 'Collapse'}
-          </button>
-        </nav>
-      </header>
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar */}
+      <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-      <div className="main-layout">
-        {!isMobile && (
-          <aside
-            className="sidebar"
-            style={{ width: navCollapsed ? '80px' : '250px' }}
-          >
-            <nav>
-              <ul>
-                <li>
-                  <a href="/">Home</a>
-                </li>
-                <li>
-                  <a href="/about">About</a>
-                </li>
-                <li>
-                  <a href="/contact">Contact</a>
-                </li>
-              </ul>
-            </nav>
-          </aside>
-        )}
-        <main className="content">
+      {/* Content area */}
+      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        {/*  Site header */}
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+        <main className="grow">
           <Outlet />
         </main>
-      </div>
 
-      <footer className="footer">
-        <p>
-          &copy; {new Date().getFullYear()}Sarathi App. All rights reserved.
-        </p>
-      </footer>
+        {/* <Banner /> */}
+      </div>
     </div>
   );
 };
