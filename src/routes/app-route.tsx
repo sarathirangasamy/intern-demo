@@ -10,7 +10,7 @@ import {
 
 import Login from "../auth/login";
 import { Home } from "../home";
-import { AppDispatch } from "../store/store";
+import { AppDispatch, RootState } from "../store/store";
 import { PrivateRoute } from "./private-route";
 import { initSession } from "../store/sessionUserReducer";
 import { InternRegisterForm } from "../auth/register";
@@ -27,7 +27,9 @@ export const AppRouter: React.FC = () => {
   }, [dispatch]);
 
   // const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
-  // const { , user } = useSelector((state: RootState) => state.auth);
+  const { currentUser } = useSelector((state: RootState) => state.userAuth);
+
+  console.log(currentUser,'currentUser')
   if (!isPageLoaded) {
     return (
       <div className="loader">

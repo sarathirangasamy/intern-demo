@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ag-grid-community/core": "^32.3.3",
     "@reduxjs/toolkit": "^2.2.8",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -11,6 +12,8 @@
     "@types/node": "^16.18.113",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
+    "ag-grid": "^18.1.2",
+    "ag-grid-react": "^33.0.0",
     "axios": "^1.7.9",
     "flatpickr": "^4.6.13",
     "jwt-decode": "^4.0.0",
