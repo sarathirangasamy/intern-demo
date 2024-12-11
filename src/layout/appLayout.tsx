@@ -1,13 +1,12 @@
-import "./styles.css";
+import './styles.css';
 
-import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
-import Header from "./header";
-import SideBar from "./side-nav";
+import React, { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
+
+import Header from './header';
+import SideBar from './side-nav';
 
 export const AppLayout: React.FC = () => {
-  const [navCollapsed, setNavCollapsed] = useState<boolean>(false);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   return (
@@ -19,12 +18,10 @@ export const AppLayout: React.FC = () => {
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         {/*  Site header */}
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-
-        <main className="grow">
+        <main className="grow" style={{background:'#E5E7EB'}}>
           <Outlet />
         </main>
 
-        {/* <Banner /> */}
       </div>
     </div>
   );

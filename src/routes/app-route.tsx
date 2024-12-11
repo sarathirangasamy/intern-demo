@@ -14,6 +14,7 @@ import { AppDispatch } from "../store/store";
 import { PrivateRoute } from "./private-route";
 import { initSession } from "../store/sessionUserReducer";
 import { InternRegisterForm } from "../auth/register";
+import { StudentList } from "../student";
 
 export const AppRouter: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,7 +38,7 @@ export const AppRouter: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-      <Route path="/student-register" element={<InternRegisterForm />} />
+        <Route path="/student-register" element={<InternRegisterForm />} />
 
         <Route path="/" element={<Outlet />}>
           {/* Public Route */}
@@ -54,6 +55,7 @@ export const AppRouter: React.FC = () => {
             element={<PrivateRoute isAuthenticated={isAuthenticated} />}
           >
             <Route path="dashboard" element={<Home />} />
+            <Route path="student" element={<StudentList />} />
             <Route path="*" element={<p>404 Not Found</p>} />
           </Route>
         </Route>
