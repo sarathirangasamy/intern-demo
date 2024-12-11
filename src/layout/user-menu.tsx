@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Transition from "./utils/transition";
+import { logout } from "../store/sessionUserReducer";
+import { useDispatch } from "react-redux";
 
 interface DropdownProfileProps {
   align?: "left" | "right";
@@ -40,11 +42,12 @@ const DropdownProfile: React.FC<DropdownProfileProps> = ({
     return () => document.removeEventListener("keydown", keyHandler);
   }, [dropdownOpen]);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    setDropdownOpen(!dropdownOpen);
-    localStorage.removeItem("OTPVerified");
-    localStorage.removeItem("phoneNumber");
-    localStorage.removeItem("userDetails");
+    dispatch(logout());
+    navigate("/");
   };
 
   return (
@@ -67,7 +70,7 @@ const DropdownProfile: React.FC<DropdownProfileProps> = ({
         />
         <div className="flex items-center truncate">
           <span className="truncate ml-2 text-sm font-medium text-gray-600 dark:text-gray-100 group-hover:text-gray-800 dark:group-hover:text-white">
-            Acme Inc.
+            Admin
           </span>
           <svg
             className="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500"
@@ -97,14 +100,14 @@ const DropdownProfile: React.FC<DropdownProfileProps> = ({
         >
           <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-gray-200 dark:border-gray-700/60">
             <div className="font-medium text-gray-800 dark:text-gray-100">
-              Acme Inc.
+              Admin
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 italic">
-              Administrator
+              admin@ultrafly.com
             </div>
           </div>
           <ul>
-            <li>
+            {/* <li>
               <Link
                 className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
                 to="/settings"
@@ -112,7 +115,7 @@ const DropdownProfile: React.FC<DropdownProfileProps> = ({
               >
                 Settings
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link
                 className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
