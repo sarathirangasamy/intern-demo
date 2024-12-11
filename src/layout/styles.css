@@ -1,0 +1,47 @@
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full height of the viewport */
+  }
+  
+  .header {
+    background: #1890ff; /* Primary color for the header */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* Padding around header content */
+  }
+  
+  .header-nav button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .main-layout {
+    display: flex;
+    flex: 1; /* Allow the main layout to grow and fill the space */
+  }
+  
+  .sidebar {
+    background: #f0f2f5; /* Similar to Ant Design's background color */
+    border-right: 1px solid #d9d9d9; /* Sidebar border */
+  }
+  
+  .content {
+    flex: 1; /* Allow the content to grow and fill the available space */
+    background: #ffffff; /* Main content background */
+    padding: 20px; /* Adjust padding as needed */
+    transition: padding-left 0.3s; /* Smooth transition for padding change */
+  }
+  
+  .footer {
+    background: #1890ff; /* Same color as header */
+    color: white;
+    text-align: center;
+    padding: 10px 0; /* Padding around footer content */
+  }
+  
