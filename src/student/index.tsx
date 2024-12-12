@@ -4,8 +4,9 @@ import { DateTime } from "luxon";
 
 import { environment } from "../environments/environment";
 import "./style.css";
+import { useNavigate } from "react-router-dom";
 
-interface RowData {
+export interface RowData {
   id: string;
   name: string;
   email: string;
@@ -22,6 +23,7 @@ interface RowData {
 }
 
 export const StudentList: React.FC = () => {
+  const navigate = useNavigate();
   const [rowData, setRowData] = useState<RowData[]>([]);
   const [page, setPage] = useState<number>(1);
   const [pageSize] = useState<number>(5);
@@ -96,7 +98,7 @@ export const StudentList: React.FC = () => {
             </thead>
             <tbody>
               {rowData.map((student) => (
-                <tr key={student.id} className="border-b">
+                <tr key={student?.id} className="border-b">
                   <td className="px-4 py-2">{student?.name}</td>
                   <td className="px-4 py-2">{student?.email}</td>
                   <td className="px-4 py-2">{student?.mobile}</td>
@@ -126,7 +128,12 @@ export const StudentList: React.FC = () => {
                       )}
                   </td>
 
-                  <td className="action-font">
+                  <td
+                    className="action-font"
+                    onClick={() =>
+                      navigate(`/home/student/detail/${student?.id}`)
+                    }
+                  >
                     View
                   </td>
                 </tr>
