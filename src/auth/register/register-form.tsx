@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import Swal from 'sweetalert2';
 
 import { Spin } from '../../common-components/spin';
 import { environment } from '../../environments/environment.prod';
+
 
 export interface RegisterFormDetails {
   email: string;
@@ -87,6 +89,26 @@ export const RegisterForm: React.FC = () => {
       isValid = false;
     }
 
+    if (!formData.college) {
+      newErrors.college = "Enter College Name";
+      isValid = false;
+    }
+
+    if (!formData.degree) {
+      newErrors.degree = "Enter Degree Name";
+      isValid = false;
+    }
+
+    if (!formData.course) {
+      newErrors.course = "Enter Course Name";
+      isValid = false;
+    }
+
+    if (!formData.poy) {
+      newErrors.poy = "Select Passout Year";
+      isValid = false;
+    }
+
     if (!formData.paymentScreenShot) {
       newErrors.paymentScreenShot = "Upload Payment screenshot";
       isValid = false;
@@ -96,46 +118,57 @@ export const RegisterForm: React.FC = () => {
     return isValid;
   };
 
-const handleSubmit = async (e: FormEvent) => {
-  e.preventDefault();
-
-  if (validateForm()) {
-    try {
-      setIsLoading(true);
-
-      const formDataToSend = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        formDataToSend.append(key, value as any);
-      });
-
-      await axios.post(environment.registerStudent, formDataToSend, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      setFormData({
-        email: "",
-        name: "",
-        mobile: "",
-        college: "",
-        degree: "",
-        poy: "",
-        course: "",
-        paymentMode: "",
-        referral: "",
-        dob: "",
-        paymentScreenShot: null,
-      });
-      setPreviewImage(null);
-    } catch (error: any) {
-      console.error("Error submitting form:", error);
-    } finally {
-      setIsLoading(false);
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+  
+    if (validateForm()) {
+      try {
+        setIsLoading(true);
+        const formDataToSend = new FormData();
+        Object.entries(formData).forEach(([key, value]) => {
+          formDataToSend.append(key, value as any);
+        });
+  
+        const result = await axios.post(environment.registerStudent, formDataToSend, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+  
+        // Success Alert
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: result?.data?.message || 'Form submitted successfully.',
+        });
+  
+        setFormData({
+          email: "",
+          name: "",
+          mobile: "",
+          college: "",
+          degree: "",
+          poy: "",
+          course: "",
+          paymentMode: "",
+          referral: "",
+          dob: "",
+          paymentScreenShot: null,
+        });
+        setPreviewImage(null);
+  
+      } catch (err: any) {
+        // Error Alert
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: err?.message || 'Something went wrong.',
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }
-};
-
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = event.target;
@@ -257,25 +290,36 @@ const handleSubmit = async (e: FormEvent) => {
           <div className="mb-0 mt-0">
             <label className="">College</label>
             <input
-              className="w-full rounded-lg border-gray-200 p-2 text-sm focus:border-green-500 focus:outline-none"
+              className={`w-full rounded-lg border-gray-200 p-2 text-sm ${
+                errors.college ? "border-red-500" : "focus:border-green-500"
+              } focus:outline-none`}
               placeholder="College"
               type="text"
               id="college"
               value={formData.college}
               onChange={handleChange}
             />
+
+            {errors.college && (
+              <p className="text-sm error-text-font">{errors.college}</p>
+            )}
           </div>
 
           <div className="mb-0 mt-0">
             <label>Degree</label>
             <input
-              className="w-full rounded-lg border-gray-200 p-2 text-sm focus:border-green-500 focus:outline-none"
+              className={`w-full rounded-lg border-gray-200 p-2 text-sm ${
+                errors.degree ? "border-red-500" : "focus:border-green-500"
+              } focus:outline-none`}
               placeholder="Degree"
               type="text"
               id="degree"
               value={formData.degree}
               onChange={handleChange}
             />
+            {errors.degree && (
+              <p className="text-sm error-text-font">{errors.degree}</p>
+            )}
           </div>
         </div>
 
@@ -283,25 +327,38 @@ const handleSubmit = async (e: FormEvent) => {
           <div className="mb-0 mt-0">
             <label>Course</label>
             <input
-              className="w-full rounded-lg  border-gray-200 p-2 text-sm focus:border-green-500 focus:outline-none"
+              // className="w-full rounded-lg  border-gray-200 p-2 text-sm focus:border-green-500 focus:outline-none"
+              className={`w-full rounded-lg border-gray-200 p-2 text-sm ${
+                errors.course ? "border-red-500" : "focus:border-green-500"
+              } focus:outline-none`}
               placeholder="Course"
               type="text"
               id="course"
               value={formData.course}
               onChange={handleChange}
             />
+            {errors.course && (
+              <p className="text-sm error-text-font">{errors.course}</p>
+            )}
           </div>
 
           <div className="mb-0 mt-0">
             <label>Passout Year</label>
             <input
-              className="w-full rounded-lg border-gray-200 p-2 text-sm focus:border-green-500 focus:outline-none"
+              // className="w-full rounded-lg border-gray-200 p-2 text-sm focus:border-green-500 focus:outline-none"
+
+              className={`w-full rounded-lg border-gray-200 p-2 text-sm ${
+                errors.poy ? "border-red-500" : "focus:border-green-500"
+              } focus:outline-none`}
               placeholder="Email address"
               type="month"
               id="poy"
               value={formData.poy}
               onChange={handleChange}
             />
+            {errors.poy && (
+              <p className="text-sm error-text-font">{errors.poy}</p>
+            )}
           </div>
         </div>
 
@@ -371,6 +428,12 @@ const handleSubmit = async (e: FormEvent) => {
               name="paymentScreenShot"
               accept="image/*"
             />
+
+            {errors.paymentScreenShot && (
+              <p className="text-sm error-text-font">
+                {errors.paymentScreenShot}
+              </p>
+            )}
 
             {previewImage && (
               <div className="mt-4">

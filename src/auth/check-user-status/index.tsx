@@ -3,6 +3,7 @@ import axios from "axios";
 import { environment } from "../../environments/environment";
 import { RegisterFormDetails } from "../register/register-form";
 import { Spin } from "../../common-components/spin";
+import Swal from "sweetalert2";
 
 interface CheckOutPropType {
   userData: RegisterFormDetails | null;
@@ -16,9 +17,6 @@ export const CheckUserStatus: React.FC<CheckOutPropType> = ({
   const [email, setEmail] = useState<string>("");
   const [errors, setErrors] = useState<{ email?: string }>({});
   const [loading, setIsLoading] = useState<boolean>(false);
-
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -58,7 +56,12 @@ export const CheckUserStatus: React.FC<CheckOutPropType> = ({
       } catch (error: any) {
         setUserData(null);
         setIsLoading(false);
-        setToastMessage(error.response?.data?.message || "An error occurred");
+        setEmail("");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response?.data?.message || "Something went wrong.",
+        });
       }
     }
   };
@@ -69,18 +72,6 @@ export const CheckUserStatus: React.FC<CheckOutPropType> = ({
       action="#"
       className="space-y-4 bg-transparent shadow-none"
     >
-      {toastMessage && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-red-500 text-white px-6 py-3 rounded shadow-lg">
-          {toastMessage}
-          <button
-            onClick={() => setToastMessage(null)}
-            className="ml-4 text-white font-bold"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
         <div className="mb-0 mt-0">
           <label className="" htmlFor="email">
