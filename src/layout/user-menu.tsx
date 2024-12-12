@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { logoutSession } from '../store/sessionUserReducer';
@@ -16,6 +16,8 @@ const DropdownProfile: React.FC<DropdownProfileProps> = ({
 
   const trigger = useRef<HTMLButtonElement>(null);
   const dropdown = useRef<HTMLDivElement>(null);
+  const  currentUser  = useSelector((state: any) => state.userAuth);
+
 
   // close on click outside
   useEffect(() => {
@@ -69,7 +71,7 @@ const DropdownProfile: React.FC<DropdownProfileProps> = ({
         />
         <div className="flex items-center truncate">
           <span className="truncate ml-2 text-sm font-medium text-gray-600 dark:text-gray-100 group-hover:text-gray-800 dark:group-hover:text-white">
-            Admin
+            {currentUser?.currentUser?.name || ""}
           </span>
           <svg
             className="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500"
@@ -99,10 +101,10 @@ const DropdownProfile: React.FC<DropdownProfileProps> = ({
         >
           <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-gray-200 dark:border-gray-700/60">
             <div className="font-medium text-gray-800 dark:text-gray-100">
-              Admin
+            {currentUser?.currentUser?.name || ""}
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 italic">
-              admin@ultrafly.com
+            {currentUser?.currentUser?.email || ""}
             </div>
           </div>
           <ul>

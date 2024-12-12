@@ -1,19 +1,13 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  BrowserRouter,
-  Navigate,
-  Outlet,
-  Route,
-  Routes,
-} from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 
-import Login from "../auth/login";
-import { Home } from "../home";
-import { PrivateRoute } from "./private-route";
-import { initSession } from "../store/sessionUserReducer";
-import { InternRegisterForm } from "../auth/register";
-import { StudentList } from "../student";
+import Login from '../auth/login';
+import { InternRegisterForm } from '../auth/register';
+import { Home } from '../home';
+import { initSession } from '../store/sessionUserReducer';
+import { StudentList } from '../student';
+import { PrivateRoute } from './private-route';
 
 export const AppRouter: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,12 +19,11 @@ export const AppRouter: React.FC = () => {
     dispatch(initSession() as any);
   }, [dispatch]);
 
-  // const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
   const  currentUser  = useSelector((state: any) => state.userAuth);
 
   if (!isPageLoaded) {
     return (
-      <div className="loader">
+      <div className="loader" style={{display:'flex', margin:'auto'}}>
         <p>Loading...</p>
       </div>
     );
