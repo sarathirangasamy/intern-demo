@@ -1,0 +1,11 @@
+.custom-btn {
+  width: auto;
+  color: #000;
+  padding: 10px;
+}
+
+.custom-btn:hover {
+  width: auto;
+  color: #ffffff;
+  padding: 10px;
+}
