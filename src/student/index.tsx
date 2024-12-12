@@ -5,6 +5,7 @@ import { DateTime } from "luxon";
 import { environment } from "../environments/environment";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
+import { Spin } from "../common-components/spin";
 
 export interface RowData {
   id: string;
@@ -78,9 +79,17 @@ export const StudentList: React.FC = () => {
       <h1 className="text-2xl font-bold mb-4">Students List</h1>
 
       {loading ? (
-        <div className="text-center text-gray-500">Loading...</div>
+        <div
+          className="text-center text-gray-500"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <Spin />
+        </div>
       ) : (
-        <div className="overflow-x-auto">
+        <div
+          className="overflow-x-auto"
+          style={{ fontFamily: "'Roboto', sans-serif" }}
+        >
           <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow">
             <thead>
               <tr className="bg-gray-100">
@@ -98,8 +107,13 @@ export const StudentList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {rowData.map((student) => (
-                <tr key={student?.id} className="border-b">
+              {rowData.map((student, index) => (
+                <tr
+                  key={student?.id}
+                  className={`border-b ${
+                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                  }`}
+                >
                   <td className="px-4 py-2">{student?.name}</td>
                   <td className="px-4 py-2">{student?.email}</td>
                   <td className="px-4 py-2">{student?.mobile}</td>
@@ -122,13 +136,11 @@ export const StudentList: React.FC = () => {
                     </span>
                   </td>
                   <td className="px-4 py-2">
-                    {" "}
                     {student?.createdAt &&
                       DateTime.fromISO(student?.createdAt).toFormat(
                         "dd MMM yyyy hh:mm a"
                       )}
                   </td>
-
                   <td
                     className="action-font"
                     onClick={() =>
