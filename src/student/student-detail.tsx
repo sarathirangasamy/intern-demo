@@ -6,6 +6,12 @@ import { environment } from "../environments/environment";
 import { useSelector } from "react-redux";
 import { Spin } from "../common-components/spin";
 
+
+export const capitalizeName = (name: string) => {
+    return name
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 export const StudentDetail: React.FC = () => {
   const { studentId } = useParams();
   const [studentData, setStudentData] = useState<RowData | null>(null);
@@ -73,11 +79,7 @@ export const StudentDetail: React.FC = () => {
   };
 
 
-  const capitalizeName = (name: string) => {
-    return name
-      .toLowerCase()
-      .replace(/\b\w/g, (char) => char.toUpperCase());
-  };
+  
 
   return (
     <div>

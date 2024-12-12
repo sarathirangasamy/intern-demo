@@ -133,6 +133,13 @@ export const RegisterForm: React.FC = () => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
+        }).catch((err) => {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err?.message || 'Something went wrong.',
+          });
         });
   
         // Success Alert
@@ -389,7 +396,7 @@ export const RegisterForm: React.FC = () => {
               }}
               value={formData.paymentMode}
             >
-              <option value="">Select Payment Mode</option>
+              <option value="">Payment Mode</option>
               <option value="ONLINE">Online</option>
               <option value="CASH">Cash</option>
             </select>

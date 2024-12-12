@@ -4,6 +4,7 @@ import { environment } from "../../environments/environment";
 import { RegisterFormDetails } from "../register/register-form";
 import { Spin } from "../../common-components/spin";
 import Swal from "sweetalert2";
+import { capitalizeName } from "../../student/student-detail";
 
 interface CheckOutPropType {
   userData: RegisterFormDetails | null;
@@ -112,7 +113,7 @@ export const CheckUserStatus: React.FC<CheckOutPropType> = ({
 
       {userData && (
         <div className="mt-4 flex flex-col items-center">
-          <h2 className="text-2xl font-bold mb-4">{userData?.name} Details</h2>
+          <h2 className="text-2xl font-bold mb-4"> {userData?.name ? capitalizeName(userData.name) : ''} Details</h2>
 
           <div className="grid gap-4 w-full max-w-md">
             <div className="flex justify-between items-center px-4 py-2 mb-0 bg-gray-100 rounded shadow">
