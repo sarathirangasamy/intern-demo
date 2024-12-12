@@ -90,7 +90,7 @@ export const CheckUserStatus: React.FC<CheckOutPropType> = ({
             className={`w-full rounded-lg border-gray-200 p-2 text-sm ${
               errors.email ? "border-red-500" : "focus:border-green-500"
             } focus:outline-none`}
-            placeholder="Please Enter Email Address"
+            placeholder="Email Address"
             type="email"
             id="email"
             value={email}
