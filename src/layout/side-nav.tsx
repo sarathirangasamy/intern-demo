@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import SidebarLinkGroup from "./sidebar-link-group";
 
 // Define the prop types for the Header component
 interface SideNavProps {
@@ -24,41 +23,6 @@ const SideBar: React.FC<SideNavProps> = ({
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
-
-  // close on click outside
-  //   useEffect(() => {
-  //     const clickHandler = ({ target }) => {
-  //       if (!sidebar.current || !trigger.current) return;
-  //       if (
-  //         !sidebarOpen ||
-  //         sidebar.current.contains(target) ||
-  //         trigger.current.contains(target)
-  //       )
-  //         return;
-  //       setSidebarOpen(false);
-  //     };
-  //     document.addEventListener("click", clickHandler);
-  //     return () => document.removeEventListener("click", clickHandler);
-  //   });
-
-  // close if the esc key is pressed
-  //   useEffect(() => {
-  //     const keyHandler = ({ keyCode }) => {
-  //       if (!sidebarOpen || keyCode !== 27) return;
-  //       setSidebarOpen(false);
-  //     };
-  //     document.addEventListener("keydown", keyHandler);
-  //     return () => document.removeEventListener("keydown", keyHandler);
-  //   });
-
-  //   useEffect(() => {
-  //     localStorage.setItem("sidebar-expanded", sidebarExpanded);
-  //     if (sidebarExpanded) {
-  //       document.querySelector("body").classList.add("sidebar-expanded");
-  //     } else {
-  //       document.querySelector("body").classList.remove("sidebar-expanded");
-  //     }
-  //   }, [sidebarExpanded]);
 
   return (
     <div className="min-w-fit">
@@ -131,19 +95,16 @@ const SideBar: React.FC<SideNavProps> = ({
             </h3>
             <ul className="mt-3">
               <li
-                className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${
-                  pathname.includes("messages") &&
-                  "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
+                className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 ${
+                  pathname === "/home/dashboard"
+                    ? "bg-violet-500 text-white"
+                    : "bg-white text-gray-800 dark:text-gray-100 hover:bg-violet-500 hover:text-white"
                 }`}
               >
                 <NavLink
                   end
                   to="/home/dashboard"
-                  className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("messages")
-                      ? ""
-                      : "hover:text-gray-900 dark:hover:text-white"
-                  }`}
+                  className="block truncate transition duration-150"
                 >
                   <div className="flex items-center justify-between">
                     <div className="grow flex items-center">
@@ -165,25 +126,22 @@ const SideBar: React.FC<SideNavProps> = ({
                 </NavLink>
               </li>
               <li
-                className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${
-                  pathname.includes("messages") &&
-                  "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
+                className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 ${
+                  pathname === "/home/student"
+                    ? "bg-violet-500 text-white"
+                    : "bg-white text-gray-800 dark:text-gray-100 hover:bg-violet-500 hover:text-white"
                 }`}
               >
                 <NavLink
                   end
                   to="/home/student"
-                  className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("messages")
-                      ? ""
-                      : "hover:text-gray-900 dark:hover:text-white"
-                  }`}
+                  className="block truncate transition duration-150"
                 >
                   <div className="flex items-center justify-between">
                     <div className="grow flex items-center">
                       <svg
                         className={`shrink-0 fill-current ${
-                          pathname.includes("messages")
+                          pathname.includes("student")
                             ? "text-violet-500"
                             : "text-gray-400 dark:text-gray-500"
                         }`}
