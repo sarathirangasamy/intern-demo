@@ -23,7 +23,6 @@ const Login: React.FC = () => {
       });
 
       if (data?.token) {
-        console.log(data.token,'data.token')
         localStorage.setItem("userToken", data.token);
         setTimeout(() => {
           dispatch(initSession() as any);
