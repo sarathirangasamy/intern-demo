@@ -17,6 +17,7 @@ export interface RegisterFormDetails {
   dob: string;
   status?: string;
   // paymentScreenShot: any | null;
+  paymentScreenShot: any | null;
 }
 
 export const RegisterForm: React.FC = () => {
@@ -31,7 +32,7 @@ export const RegisterForm: React.FC = () => {
     paymentMode: "",
     referral: "",
     dob: "",
-    // paymentScreenShot: null,
+    paymentScreenShot: null,
   });
 
   const [previewImage, setPreviewImage] = useState(null);
@@ -86,58 +87,55 @@ export const RegisterForm: React.FC = () => {
       isValid = false;
     }
 
-    // if (!formData.paymentScreenShot) {
-    //   newErrors.paymentScreenShot = "Upload Payment screenshot";
-    //   isValid = false;
-    // }
+    if (!formData.paymentScreenShot) {
+      newErrors.paymentScreenShot = "Upload Payment screenshot";
+      isValid = false;
+    }
 
     setErrors(newErrors);
     return isValid;
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault(); // Prevent default form submission behavior.
+const handleSubmit = async (e: FormEvent) => {
+  e.preventDefault();
 
-    if (validateForm()) {
-      try {
-        setIsLoading(true);
-        await axios
-          .post(environment.registerStudent, formData, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((result) => {
-            setFormData({
-              email: "",
-              name: "",
-              mobile: "",
-              college: "",
-              degree: "",
-              poy: "",
-              course: "",
-              paymentMode: "",
-              referral: "",
-              dob: "",
-            });
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            setIsLoading(false);
-          });
-      } catch (error: any) {
-        setIsLoading(false);
-        if (error.response) {
-          console.error("Error Response:", error.response.data);
-          console.error("Error Status:", error.response.status);
-        } else if (error.request) {
-          console.error("No Response:", error.request);
-        } else {
-          console.error("Error Message:", error.message);
-        }
-      }
+  if (validateForm()) {
+    try {
+      setIsLoading(true);
+
+      const formDataToSend = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value as any);
+      });
+
+      await axios.post(environment.registerStudent, formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setFormData({
+        email: "",
+        name: "",
+        mobile: "",
+        college: "",
+        degree: "",
+        poy: "",
+        course: "",
+        paymentMode: "",
+        referral: "",
+        dob: "",
+        paymentScreenShot: null,
+      });
+      setPreviewImage(null);
+    } catch (error: any) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }
+};
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = event.target;
@@ -366,7 +364,7 @@ export const RegisterForm: React.FC = () => {
               Payment Screenshot
             </label>
             <input
-              // onChange={handleFileChange}
+              onChange={handleFileChange}
               className="w-full rounded-lg border-gray-200 p-2 text-sm mb-4"
               type="file"
               id="paymentScreenShot"
