@@ -1,8 +1,8 @@
-import axios from "axios";
-import { ChangeEvent, FormEvent, useState } from "react";
+import axios from 'axios';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
-import { environment } from "../../environments/environment.prod";
-import { Spin } from "../../common-components/spin";
+import { Spin } from '../../common-components/spin';
+import { environment } from '../../environments/environment.prod';
 
 export interface RegisterFormDetails {
   email: string;
