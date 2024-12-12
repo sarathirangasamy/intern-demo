@@ -9,3 +9,9 @@
   color: #ffffff;
   padding: 10px;
 }
+
+.action-font {
+  color: rgb(57, 103, 227);
+  font-weight: 500;
+  cursor: pointer;
+}

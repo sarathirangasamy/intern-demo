@@ -89,6 +89,9 @@ export const StudentList: React.FC = () => {
                 <th className="px-4 py-2 text-left border-b">Payment Mode</th>
                 <th className="px-4 py-2 text-left border-b">Status</th>
                 <th className="px-4 py-2 text-left border-b">Created At</th>
+                <th className="px-4 py-2 text-left border-b flex items-center">
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -121,6 +124,10 @@ export const StudentList: React.FC = () => {
                       DateTime.fromISO(student?.createdAt).toFormat(
                         "dd MMM yyyy hh:mm a"
                       )}
+                  </td>
+
+                  <td className="action-font">
+                    View
                   </td>
                 </tr>
               ))}
