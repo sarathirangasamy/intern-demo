@@ -43,40 +43,47 @@ export const StudentDetail: React.FC = () => {
 
   const updateStatus = async () => {
     try {
-      setIsLoading(true); // Show loading state
+      setIsLoading(true);
       
       const modifyStatus = {
-        status: "VERIFIED", // Update the status
-        userId: currentUser?._id, // User ID
-        userName: currentUser?.name, // User name
-        studentId: studentId, // Student ID
+        status: "VERIFIED", 
+        userId: currentUser?._id,
+        userName: currentUser?.name, 
+        studentId: studentId,
       };
   
       const response = await axios.post(
-        `${environment.apiPort}/api/update-student-status`, // Replace with actual API endpoint
+        `${environment.apiPort}/api/update-student-status`,
         modifyStatus, 
         {
           headers: {
-            "Content-Type": "application/json", // Ensure proper header
+            "Content-Type": "application/json",
           },
         }
       );
   
-      console.log(response?.data?.message); // Log the success message
-      setIsLoading(false); // Hide loading state
-      fetchStudentData(); // Refresh student data
+      console.log(response?.data?.message);
+      setIsLoading(false); 
+      fetchStudentData();
   
     } catch (error: any) {
       console.error("Error updating status:", error.message);
-      setIsLoading(false); // Hide loading state
+      setIsLoading(false); 
     }
   };
-  
+
+
+  const capitalizeName = (name: string) => {
+    return name
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
   return (
     <div>
       <div className="container relative flex flex-col justify-between h-full max-w-6xl px-10 mx-auto xl:px-0 mt-5">
         <h2 className="mb-1 text-3xl font-extrabold leading-tight text-gray-900">
-          Student Detail
+        {studentData?.name ? capitalizeName(studentData.name) : ''} Student Detail
         </h2>
         <div className="w-full">
           <div className="flex flex-col w-full mb-10 sm:flex-row">
@@ -86,20 +93,20 @@ export const StudentDetail: React.FC = () => {
                 <div className="relative h-full p-5 bg-white border-2 border-indigo-500 rounded-lg">
                   <div className="flex items-center -mt-1">
                     <h3 className="my-2 ml-3 text-lg font-bold text-gray-800">
-                      Student Detail
+                    {studentData?.name ? capitalizeName(studentData.name) : ''} Student Detail
                     </h3>
                   </div>
                   <p className="mt-3 mb-1 text-xs font-medium text-indigo-500 uppercase">
                     ------------
                   </p>
                   <p className="mb-2 text-gray-600">
-                    Name: <b>{studentData.name}</b>
+                    Name: <b>{studentData?.name}</b>
                   </p>
                   <p className="mb-2 text-gray-600">
-                    Email: <b>{studentData.email}</b>
+                    Email: <b>{studentData?.email}</b>
                   </p>
                   <p className="mb-2 text-gray-600">
-                    Mobile: <b>{studentData.mobile}</b>
+                    Mobile: <b>{studentData?.mobile}</b>
                   </p>
                 </div>
               </div>
@@ -171,7 +178,7 @@ export const StudentDetail: React.FC = () => {
                   </p>
                   {studentData?.status === "NOT_VERIFIED" ? (
                     <button
-                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md ml-0 sm:ml-10"
+                      className="bg-blue-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md ml-0 sm:ml-10"
                       style={{ width: "auto", display: "flex" }}
                       onClick={updateStatus}
                       disabled={isLoading}
