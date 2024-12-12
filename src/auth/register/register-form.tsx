@@ -1,10 +1,9 @@
-import axios from 'axios';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import Swal from 'sweetalert2';
+import axios from "axios";
+import { ChangeEvent, FormEvent, useState } from "react";
+import Swal from "sweetalert2";
 
-import { Spin } from '../../common-components/spin';
-import { environment } from '../../environments/environment.prod';
-
+import { Spin } from "../../common-components/spin";
+import { environment } from "../../environments/environment.prod";
 
 export interface RegisterFormDetails {
   email: string;
@@ -19,7 +18,7 @@ export interface RegisterFormDetails {
   dob: string;
   status?: string;
   // paymentScreenShot: any | null;
-  paymentScreenShot: any | null;
+  paymentScreenShot?: any | null;
 }
 
 export const RegisterForm: React.FC = () => {
@@ -109,9 +108,11 @@ export const RegisterForm: React.FC = () => {
       isValid = false;
     }
 
-    if (!formData.paymentScreenShot) {
-      newErrors.paymentScreenShot = "Upload Payment screenshot";
-      isValid = false;
+    if (formData?.paymentMode === "ONLINE") {
+      if (!formData.paymentScreenShot) {
+        newErrors.paymentScreenShot = "Upload Payment screenshot";
+        isValid = false;
+      }
     }
 
     setErrors(newErrors);
@@ -120,7 +121,7 @@ export const RegisterForm: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-  
+
     if (validateForm()) {
       try {
         setIsLoading(true);
@@ -128,48 +129,54 @@ export const RegisterForm: React.FC = () => {
         Object.entries(formData).forEach(([key, value]) => {
           formDataToSend.append(key, value as any);
         });
-  
-        const result = await axios.post(environment.registerStudent, formDataToSend, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }).catch((err) => {
 
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: err?.message || 'Something went wrong.',
+        await axios
+          .post(environment.registerStudent, formDataToSend, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: result?.data?.message || "Form submitted successfully.",
+            });
+
+            setFormData({
+              email: "",
+              name: "",
+              mobile: "",
+              college: "",
+              degree: "",
+              poy: "",
+              course: "",
+              paymentMode: "",
+              referral: "",
+              dob: "",
+              paymentScreenShot: null,
+            });
+            setPreviewImage(null);
+          })
+          .catch((err) => {
+            const errorMessage =
+              err.response?.data?.message ||
+              err.message ||
+              "Something went wrong.";
+
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: errorMessage, // This will display "Email already exists"
+            });
           });
-        });
-  
-        // Success Alert
-        Swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: result?.data?.message || 'Form submitted successfully.',
-        });
-  
-        setFormData({
-          email: "",
-          name: "",
-          mobile: "",
-          college: "",
-          degree: "",
-          poy: "",
-          course: "",
-          paymentMode: "",
-          referral: "",
-          dob: "",
-          paymentScreenShot: null,
-        });
-        setPreviewImage(null);
-  
       } catch (err: any) {
-        // Error Alert
+        console.log(err, "2321312");
+
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: err?.message || 'Something went wrong.',
+          icon: "error",
+          title: "Oops...",
+          text: err?.message || "Something went wrong.",
         });
       } finally {
         setIsLoading(false);
@@ -419,43 +426,45 @@ export const RegisterForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="mb-0 mt-0">
-            <label
-              htmlFor="paymentScreenShot"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Payment Screenshot
-            </label>
-            <input
-              onChange={handleFileChange}
-              className="w-full rounded-lg border-gray-200 p-2 text-sm mb-4"
-              type="file"
-              id="paymentScreenShot"
-              name="paymentScreenShot"
-              accept="image/*"
-            />
+        {formData?.paymentMode === "ONLINE" ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="mb-0 mt-0">
+              <label
+                htmlFor="paymentScreenShot"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Payment Screenshot
+              </label>
+              <input
+                onChange={handleFileChange}
+                className="w-full rounded-lg border-gray-200 p-2 text-sm mb-4"
+                type="file"
+                id="paymentScreenShot"
+                name="paymentScreenShot"
+                accept="image/*"
+              />
 
-            {errors.paymentScreenShot && (
-              <p className="text-sm error-text-font">
-                {errors.paymentScreenShot}
-              </p>
-            )}
-
-            {previewImage && (
-              <div className="mt-4">
-                <p className="text-sm font-medium text-gray-600 mb-2 ">
-                  Preview:
+              {errors.paymentScreenShot && (
+                <p className="text-sm error-text-font">
+                  {errors.paymentScreenShot}
                 </p>
-                <img
-                  src={previewImage}
-                  alt="Uploaded Preview"
-                  className="w-full h-auto max-w-xs rounded-lg shadow-md"
-                />
-              </div>
-            )}
+              )}
+
+              {previewImage && (
+                <div className="mt-4">
+                  <p className="text-sm font-medium text-gray-600 mb-2 ">
+                    Preview:
+                  </p>
+                  <img
+                    src={previewImage}
+                    alt="Uploaded Preview"
+                    className="w-full h-auto max-w-xs rounded-lg shadow-md"
+                  />
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        ) : null}
 
         <div className="mt-4">
           <button
