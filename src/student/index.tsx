@@ -1,8 +1,9 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { DateTime } from "luxon";
 
-import { environment } from '../environments/environment';
-import './style.css'
+import { environment } from "../environments/environment";
+import "./style.css";
 
 interface RowData {
   id: string;
@@ -16,6 +17,8 @@ interface RowData {
   poy: string;
   paymentMode: string;
   referral?: string;
+  status?: string;
+  createdAt?: string;
 }
 
 export const StudentList: React.FC = () => {
@@ -38,17 +41,19 @@ export const StudentList: React.FC = () => {
 
       setRowData(
         data.map((student: any, index: number) => ({
-          id: student._id || index,
-          name: student.name,
-          email: student.email,
-          mobile: student.mobile,
-          college: student.college,
-          degree: student.degree,
-          course: student.course,
-          dob: new Date(student.dob).toLocaleDateString(),
-          poy: new Date(student.poy).toLocaleDateString(),
-          paymentMode: student.paymentMode,
-          referral: student.referral || "N/A",
+          id: student?._id || index,
+          name: student?.name,
+          email: student?.email,
+          mobile: student?.mobile,
+          college: student?.college,
+          degree: student?.degree,
+          course: student?.course,
+          dob: new Date(student?.dob).toLocaleDateString(),
+          poy: new Date(student?.poy).toLocaleDateString(),
+          paymentMode: student?.paymentMode,
+          referral: student?.referral || "N/A",
+          status: student?.status || "Not Verified",
+          createdAt: student?.createdAt || "N/A",
         }))
       );
 
@@ -79,28 +84,44 @@ export const StudentList: React.FC = () => {
                 <th className="px-4 py-2 text-left border-b">Name</th>
                 <th className="px-4 py-2 text-left border-b">Email</th>
                 <th className="px-4 py-2 text-left border-b">Mobile</th>
-                <th className="px-4 py-2 text-left border-b">College</th>
-                <th className="px-4 py-2 text-left border-b">Degree</th>
-                <th className="px-4 py-2 text-left border-b">Course</th>
                 <th className="px-4 py-2 text-left border-b">Date of Birth</th>
                 <th className="px-4 py-2 text-left border-b">Passing Year</th>
                 <th className="px-4 py-2 text-left border-b">Payment Mode</th>
-                <th className="px-4 py-2 text-left border-b">Referral</th>
+                <th className="px-4 py-2 text-left border-b">Status</th>
+                <th className="px-4 py-2 text-left border-b">Created At</th>
               </tr>
             </thead>
             <tbody>
               {rowData.map((student) => (
                 <tr key={student.id} className="border-b">
-                  <td className="px-4 py-2">{student.name}</td>
-                  <td className="px-4 py-2">{student.email}</td>
-                  <td className="px-4 py-2">{student.mobile}</td>
-                  <td className="px-4 py-2">{student.college}</td>
-                  <td className="px-4 py-2">{student.degree}</td>
-                  <td className="px-4 py-2">{student.course}</td>
-                  <td className="px-4 py-2">{student.dob}</td>
-                  <td className="px-4 py-2">{student.poy}</td>
-                  <td className="px-4 py-2">{student.paymentMode}</td>
-                  <td className="px-4 py-2">{student.referral}</td>
+                  <td className="px-4 py-2">{student?.name}</td>
+                  <td className="px-4 py-2">{student?.email}</td>
+                  <td className="px-4 py-2">{student?.mobile}</td>
+                  <td className="px-4 py-2">{student?.dob}</td>
+                  <td className="px-4 py-2">
+                    {new Date(student?.poy).getFullYear()}
+                  </td>
+                  <td className="px-4 py-2">{student?.paymentMode}</td>
+                  <td className="px-4 py-2">
+                    <span
+                      className={`${
+                        student?.status === "NOT_VERIFIED"
+                          ? "text-red-500"
+                          : "text-green-500"
+                      }`}
+                    >
+                      {student?.status === "NOT_VERIFIED"
+                        ? "Not Verified"
+                        : "Verified"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2">
+                    {" "}
+                    {student?.createdAt &&
+                      DateTime.fromISO(student?.createdAt).toFormat(
+                        "dd MMM yyyy hh:mm a"
+                      )}
+                  </td>
                 </tr>
               ))}
             </tbody>
