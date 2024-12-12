@@ -5,13 +5,11 @@ import { RowData } from ".";
 import { environment } from "../environments/environment";
 import { useSelector } from "react-redux";
 import { Spin } from "../common-components/spin";
-
+import Swal from "sweetalert2";
 
 export const capitalizeName = (name: string) => {
-    return name
-      .toLowerCase()
-      .replace(/\b\w/g, (char) => char.toUpperCase());
-  };
+  return name.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+};
 export const StudentDetail: React.FC = () => {
   const { studentId } = useParams();
   const [studentData, setStudentData] = useState<RowData | null>(null);
@@ -47,45 +45,74 @@ export const StudentDetail: React.FC = () => {
     return <div>No data found</div>;
   }
 
+  const confirmUpdateStatus = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to update the status to VERIFIED?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Call the updateStatus function
+        updateStatus();
+      }
+    });
+  };
+
   const updateStatus = async () => {
     try {
       setIsLoading(true);
-      
+
       const modifyStatus = {
-        status: "VERIFIED", 
+        status: "VERIFIED",
         userId: currentUser?._id,
-        userName: currentUser?.name, 
+        userName: currentUser?.name,
         studentId: studentId,
       };
-  
+
       const response = await axios.post(
         `${environment.apiPort}/api/update-student-status`,
-        modifyStatus, 
+        modifyStatus,
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-  
-      console.log(response?.data?.message);
-      setIsLoading(false); 
-      fetchStudentData();
-  
+
+      // Show success message
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: response?.data?.message || "Status updated successfully.",
+      });
+
+      setIsLoading(false);
+      fetchStudentData(); // Refresh data after updating
     } catch (error: any) {
-      console.error("Error updating status:", error.message);
-      setIsLoading(false); 
+      // Show error message
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text:
+          error.response?.data?.message ||
+          error.message ||
+          "Failed to update status.",
+      });
+
+      setIsLoading(false);
     }
   };
-
-
-  
 
   return (
     <div>
       <div className="container relative flex flex-col justify-between h-full max-w-6xl px-10 mx-auto xl:px-0 mt-5">
         <h2 className="mb-1 text-3xl font-extrabold leading-tight text-gray-900">
-        {studentData?.name ? capitalizeName(studentData.name) : ''} Student Detail
+          {studentData?.name ? capitalizeName(studentData.name) : ""} Student
+          Detail
         </h2>
         <div className="w-full">
           <div className="flex flex-col w-full mb-10 sm:flex-row">
@@ -95,7 +122,10 @@ export const StudentDetail: React.FC = () => {
                 <div className="relative h-full p-5 bg-white border-2 border-indigo-500 rounded-lg">
                   <div className="flex items-center -mt-1">
                     <h3 className="my-2 ml-3 text-lg font-bold text-gray-800">
-                    {studentData?.name ? capitalizeName(studentData.name) : ''} Student Detail
+                      {studentData?.name
+                        ? capitalizeName(studentData.name)
+                        : ""}{" "}
+                      Student Detail
                     </h3>
                   </div>
                   <p className="mt-3 mb-1 text-xs font-medium text-indigo-500 uppercase">
@@ -182,7 +212,7 @@ export const StudentDetail: React.FC = () => {
                     <button
                       className="bg-blue-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md ml-0 sm:ml-10"
                       style={{ width: "auto", display: "flex" }}
-                      onClick={updateStatus}
+                      onClick={confirmUpdateStatus}
                       disabled={isLoading}
                     >
                       Update Status {isLoading ? <Spin /> : null}
