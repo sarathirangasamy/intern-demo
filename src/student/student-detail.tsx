@@ -2,29 +2,36 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { RowData } from ".";
+import { environment } from "../environments/environment";
+import { useSelector } from "react-redux";
+import { Spin } from "../common-components/spin";
 
 export const StudentDetail: React.FC = () => {
   const { studentId } = useParams();
   const [studentData, setStudentData] = useState<RowData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { currentUser } = useSelector((state: any) => state?.userAuth);
 
   useEffect(() => {
-    const fetchStudentData = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `http://localhost:3333/api/student/detail/${studentId}`
-        );
-        setStudentData(response?.data?.data);
-      } catch (error) {
-        console.error("Error fetching student data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (!studentId) return;
 
     fetchStudentData();
   }, [studentId]);
+
+  const fetchStudentData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `http://localhost:3333/api/student/detail/${studentId}`
+      );
+      setStudentData(response?.data?.data);
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -34,19 +41,39 @@ export const StudentDetail: React.FC = () => {
     return <div>No data found</div>;
   }
 
+  const updateStatus = async () => {
+    try {
+      setIsLoading(true); // Show loading state
+      
+      const modifyStatus = {
+        status: "VERIFIED", // Update the status
+        userId: currentUser?._id, // User ID
+        userName: currentUser?.name, // User name
+        studentId: studentId, // Student ID
+      };
+  
+      const response = await axios.post(
+        `${environment.apiPort}/api/update-student-status`, // Replace with actual API endpoint
+        modifyStatus, 
+        {
+          headers: {
+            "Content-Type": "application/json", // Ensure proper header
+          },
+        }
+      );
+  
+      console.log(response?.data?.message); // Log the success message
+      setIsLoading(false); // Hide loading state
+      fetchStudentData(); // Refresh student data
+  
+    } catch (error: any) {
+      console.error("Error updating status:", error.message);
+      setIsLoading(false); // Hide loading state
+    }
+  };
+  
   return (
     <div>
-      {/* <p>Name: {studentData.name}</p>
-      <p>Email: {studentData.email}</p>
-      <p>Mobile: {studentData.mobile}</p>
-      <p>College: {studentData.college}</p>
-      <p>Degree: {studentData.degree}</p>
-      <p>Course: {studentData.course}</p>
-      <p>Date of Birth: {studentData.dob}</p>
-      <p>Passing Year: {studentData.poy}</p>
-      <p>Payment Mode: {studentData.paymentMode}</p>
-      <p>Referral: {studentData.referral || 'N/A'}</p> */}
-
       <div className="container relative flex flex-col justify-between h-full max-w-6xl px-10 mx-auto xl:px-0 mt-5">
         <h2 className="mb-1 text-3xl font-extrabold leading-tight text-gray-900">
           Student Detail
@@ -142,12 +169,16 @@ export const StudentDetail: React.FC = () => {
                       </span>
                     </b>
                   </p>
-                  <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md ml-0 sm:ml-10"
-                    style={{ width: "auto" }}
-                  >
-                    Update Status
-                  </button>
+                  {studentData?.status === "NOT_VERIFIED" ? (
+                    <button
+                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md ml-0 sm:ml-10"
+                      style={{ width: "auto", display: "flex" }}
+                      onClick={updateStatus}
+                      disabled={isLoading}
+                    >
+                      Update Status {isLoading ? <Spin /> : null}
+                    </button>
+                  ) : null}
                 </div>
               </div>
             </div>
