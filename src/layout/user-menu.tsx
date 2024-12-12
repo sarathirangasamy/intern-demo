@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Transition from "./utils/transition";
-import { logout } from "../store/sessionUserReducer";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import { logoutSession } from '../store/sessionUserReducer';
+import Transition from './utils/transition';
 
 interface DropdownProfileProps {
   align?: "left" | "right";
@@ -43,11 +44,9 @@ const DropdownProfile: React.FC<DropdownProfileProps> = ({
   }, [dropdownOpen]);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logout());
-    navigate("/");
+    dispatch(logoutSession() as any);
   };
 
   return (

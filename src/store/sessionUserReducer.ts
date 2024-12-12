@@ -1,8 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-
-// import { LoginCheckApi } from "../api/api";
-const backendURL = 'http://localhost:3000';
-
+import { createSlice } from "@reduxjs/toolkit";
+import { LoginCheckApi } from "../api/api";
 
 const initialState = {
   isPageLoaded: false,
@@ -17,7 +14,7 @@ const sessionLogin = createSlice({
     login: (state: any, action: any) => {
       state.isPageLoaded = true;
       state.isAuthenticated = true;
-      state.currentUser = action?.payload;
+      state.currentUser = action?.payload?.userInfo;
     },
     logout: (state: any) => {
       state.isPageLoaded = true;
@@ -30,34 +27,47 @@ const sessionLogin = createSlice({
 export const { login, logout } = sessionLogin.actions;
 export default sessionLogin.reducer;
 
+// export const userLoginReducer = (state = initialState, action) => {
+//   switch (action.type) {
+//     case "LOGIN":
+//       return {
+//         ...initialState,
+//         authChecked: true,
+//         isPageLoaded: true,
+//         loggedIn: true,
+//         currentUser: action.payload,
+//       };
+//     case "LOGOUT":
+//       return {
+//         ...initialState,
+//         isPageLoaded: true,
+//         loggedIn: false,
+//         currentUser: null,
+//       };
+//     default:
+//       return state;
+//   }
+// };
 
 export const initSession = () => async (dispatch: any) => {
   getLoginInfo(dispatch);
 };
 
 export const logoutSession = () => async (dispatch: any) => {
+  localStorage.removeItem("userToken");
   dispatch(logout({} as any));
 };
 
 const getLoginInfo = async (dispatch: any) => {
   const wfmCookie = localStorage.getItem("userToken");
+  const userInfo = await getLoginApiInfo();
   if (wfmCookie) {
-    dispatch(login({ id: "Welcome message from " } as any));
+    dispatch(login({ userInfo: userInfo?.data?.user } as any));
   } else {
     dispatch(logout({} as any));
   }
+};
 
-
-  // return;
-  // LoginCheckApi()
-  //   .then((data: any) => {
-  //     if (data.status === "success") {
-  //       dispatch(login(data?.data?.customer));
-  //     } else {
-  //       dispatch(logout());
-  //     }
-  //   })
-  //   .catch((data: any) => {
-  //     dispatch(logout());
-  //   });
+const getLoginApiInfo = async () => {
+  return await LoginCheckApi();
 };

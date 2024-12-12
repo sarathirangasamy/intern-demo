@@ -10,14 +10,13 @@ import {
 
 import Login from "../auth/login";
 import { Home } from "../home";
-import { AppDispatch, RootState } from "../store/store";
 import { PrivateRoute } from "./private-route";
 import { initSession } from "../store/sessionUserReducer";
 import { InternRegisterForm } from "../auth/register";
 import { StudentList } from "../student";
 
 export const AppRouter: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const { isAuthenticated, isPageLoaded } = useSelector(
     (state: any) => state?.userAuth
   );
@@ -27,9 +26,8 @@ export const AppRouter: React.FC = () => {
   }, [dispatch]);
 
   // const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
-  const { currentUser } = useSelector((state: RootState) => state.userAuth);
+  const  currentUser  = useSelector((state: any) => state.userAuth);
 
-  console.log(currentUser,'currentUser')
   if (!isPageLoaded) {
     return (
       <div className="loader">
