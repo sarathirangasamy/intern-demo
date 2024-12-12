@@ -19,6 +19,7 @@ export interface RowData {
   paymentMode: string;
   referral?: string;
   status?: string;
+  paymentScreenShot?: string;
   createdAt?: string;
 }
 
