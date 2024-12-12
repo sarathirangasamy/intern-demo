@@ -1,39 +1,119 @@
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
-
-import React from 'react';
-import { AgGridReact } from 'ag-grid-react';
-import { ColDef } from 'ag-grid-community';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { environmentForStudent } from '../environments/environment.stag'; 
 
 interface RowData {
-  id: number;
   name: string;
   email: string;
-  role: string;
+  mobile: string;
+  college: string;
+  degree: string;
+  course: string;
+  dob: string;
+  poy: string;
+  paymentMode: string;
+  referral?: string;
 }
 
-const columnDefs: ColDef<RowData>[] = [
-  { headerName: "ID", field: "id" },
-  { headerName: "Name", field: "name" },
-  { headerName: "Email", field: "email" },
-  { headerName: "Role", field: "role" },
-];
-
-const rowData: RowData[] = [
-  { id: 1, name: "John Doe", email: "john.doe@example.com", role: "Admin" },
-  { id: 2, name: "Jane Smith", email: "jane.smith@example.com", role: "User" },
-];
+interface ApiResponse {
+  message: string;
+  data: RowData[]; 
+}
 
 export const StudentList: React.FC = () => {
+  const [rowData, setRowData] = useState<RowData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); 
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await axios.get<ApiResponse>(environmentForStudent.getstudent);
+        const students = response.data.data || []; 
+
+        setRowData(
+          students.map((student) => ({
+            name: student.name,
+            email: student.email,
+            mobile: student.mobile,
+            college: student.college,
+            degree: student.degree,
+            course: student.course,
+            dob: new Date(student.dob).toLocaleDateString(), 
+            poy: new Date(student.poy).toLocaleDateString(),
+            paymentMode: student.paymentMode,
+            referral: student.referral || "N/A", 
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching student details:", error);
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    fetchStudents();
+  }, []); 
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="ag-theme-alpine" style={{ height: "500px", width: "100%" }}>
-      <AgGridReact
-        columnDefs={columnDefs}
-        rowData={rowData}
-        pagination={true}
-        paginationPageSize={10}
-        defaultColDef={{ flex: 1, minWidth: 100 }}
-      />
+    <div style={{ padding: '20px', overflowX: 'auto' }}>
+      <table
+        style={{
+          width: '100%',
+          borderCollapse: 'collapse',
+          marginTop: '20px',
+        }}
+      >
+        <thead>
+          <tr>
+            <th style={headerStyle}>Name</th>
+            <th style={headerStyle}>Email</th>
+            <th style={headerStyle}>Mobile</th>
+            <th style={headerStyle}>College</th>
+            <th style={headerStyle}>Degree</th>
+            <th style={headerStyle}>Course</th>
+            <th style={headerStyle}>Date of Birth</th>
+            <th style={headerStyle}>Passing Year</th>
+            <th style={headerStyle}>Payment Mode</th>
+            <th style={headerStyle}>Referral</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rowData.map((student, index) => (
+            <tr key={index}>
+              <td style={cellStyle}>{student.name}</td>
+              <td style={cellStyle}>{student.email}</td>
+              <td style={cellStyle}>{student.mobile}</td>
+              <td style={cellStyle}>{student.college}</td>
+              <td style={cellStyle}>{student.degree}</td>
+              <td style={cellStyle}>{student.course}</td>
+              <td style={cellStyle}>{student.dob}</td>
+              <td style={cellStyle}>{student.poy}</td>
+              <td style={cellStyle}>{student.paymentMode}</td>
+              <td style={cellStyle}>{student.referral}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
+
+// Styles
+const headerStyle: React.CSSProperties = {
+  padding: '10px',
+  border: '1px solid #ddd',
+  backgroundColor: '#f4f4f4',
+  textAlign: 'left',
+  fontWeight: 'bold',
+};
+
+const cellStyle: React.CSSProperties = {
+  padding: '10px',
+  border: '1px solid #ddd',
+  textAlign: 'left',
+};
+

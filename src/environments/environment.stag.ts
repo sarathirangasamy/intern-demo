@@ -1,5 +1,5 @@
 
-export const environment = {
+export const environmentForStudent = {
   production: false,
-  registerStudent: 'http://localhost:3333/api/register-student',
+  getstudent: 'http://localhost:3333/api/student/details',
 };
