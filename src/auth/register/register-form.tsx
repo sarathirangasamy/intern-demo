@@ -15,6 +15,7 @@ export interface RegisterFormDetails {
   paymentMode: string;
   referral: string;
   dob: string;
+  status?: string;
   // paymentScreenShot: any | null;
 }
 

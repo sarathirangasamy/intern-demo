@@ -11,6 +11,8 @@ export const CheckUserStatus: React.FC = () => {
   const [userData, setUserData] = useState<RegisterFormDetails | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  console.log(userData, "userData");
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -47,7 +49,6 @@ export const CheckUserStatus: React.FC = () => {
         );
         setIsLoading(false);
         setUserData(response.data?.data);
-        setToastMessage("User data fetched successfully!");
       } catch (error: any) {
         setUserData(null);
         setIsLoading(false);
@@ -88,6 +89,11 @@ export const CheckUserStatus: React.FC = () => {
             id="email"
             value={email}
             onChange={handleChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSubmit(e);
+              }
+            }}
           />
           {errors.email && (
             <p className="text-sm text-red-500">{errors.email}</p>
@@ -112,24 +118,37 @@ export const CheckUserStatus: React.FC = () => {
           <h2 className="text-2xl font-bold mb-4">{userData?.name} Details</h2>
 
           <div className="grid gap-4 w-full max-w-md">
-            <div className="flex justify-between items-center px-4 py-2 bg-gray-100 rounded shadow">
-              <span className="font-semibold text-gray-700">Name:</span>
+            <div className="flex justify-between items-center px-4 py-2 mb-0 bg-gray-100 rounded shadow">
+              <span className="font-semibold text-gray-700">Name</span>
               <span className="text-gray-900">{userData?.name}</span>
             </div>
 
-            <div className="flex justify-between items-center px-4 py-2 bg-gray-100 rounded shadow">
-              <span className="font-semibold text-gray-700">Email:</span>
+            <div className="flex justify-between items-center px-4 py-2 mb-0 bg-gray-100 rounded shadow">
+              <span className="font-semibold text-gray-700">Email</span>
               <span className="text-gray-900">{userData?.email}</span>
             </div>
 
-            <div className="flex justify-between items-center px-4 py-2 bg-gray-100 rounded shadow">
-              <span className="font-semibold text-gray-700">Mobile:</span>
+            <div className="flex justify-between items-center px-4 py-2 mb-0 bg-gray-100 rounded shadow">
+              <span className="font-semibold text-gray-700">Mobile</span>
               <span className="text-gray-900">{userData?.mobile}</span>
             </div>
 
-            <div className="flex justify-between items-center px-4 py-2 bg-gray-100 rounded shadow">
-              <span className="font-semibold text-gray-700">Status:</span>
-              {/* <span className="text-gray-900">{userData?.status}</span> */}
+            <div className="flex justify-between items-center px-4 py-2 mb-0 bg-gray-100 rounded shadow">
+              <span className="font-semibold text-gray-700">Payment Mode</span>
+              <span className="text-gray-900">{userData?.paymentMode}</span>
+            </div>
+
+            <div className="flex justify-between items-center px-4 py-2 mb-0 bg-gray-100 rounded shadow">
+              <span className="font-semibold text-gray-700">Status</span>
+              <span
+                className={`text-gray-900 ${
+                  userData?.status === "VERIFIED"
+                    ? "text-green-500"
+                    : "text-red-500"
+                }`}
+              >
+                {userData?.status === "VERIFIED" ? "Verified" : "Not Verified"}
+              </span>
             </div>
           </div>
         </div>

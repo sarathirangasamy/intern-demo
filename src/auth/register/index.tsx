@@ -45,7 +45,7 @@ export const InternRegisterForm: React.FC = () => {
           (window.innerWidth || 0) < 750
             ? "bg-gray-100 h-auto"
             : activeTab === "status"
-            ? "bg-gray-100 h-screen"
+            ? "bg-gray-100 h-auto"
             : "bg-gray-100 h-auto"
         }`}  
       >
@@ -114,7 +114,7 @@ export const InternRegisterForm: React.FC = () => {
                   </div>
                 )}
                 {activeTab === "status" && (
-                  <div className="p-6 bg-gray-50 rounded-lg">
+                  <div className="p-6 bg-gray-50 rounded-lg h-auto">
                     {/* Check Status Component */}
                     <CheckUserStatus />
                   </div>
