@@ -4,14 +4,20 @@ import { environment } from "../../environments/environment";
 import { RegisterFormDetails } from "../register/register-form";
 import { Spin } from "../../common-components/spin";
 
-export const CheckUserStatus: React.FC = () => {
+interface CheckOutPropType {
+  userData: RegisterFormDetails | null;
+  setUserData: React.Dispatch<React.SetStateAction<RegisterFormDetails | null>>;
+}
+
+export const CheckUserStatus: React.FC<CheckOutPropType> = ({
+  userData,
+  setUserData,
+}) => {
   const [email, setEmail] = useState<string>("");
   const [errors, setErrors] = useState<{ email?: string }>({});
   const [loading, setIsLoading] = useState<boolean>(false);
-  const [userData, setUserData] = useState<RegisterFormDetails | null>(null);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  console.log(userData, "userData");
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);

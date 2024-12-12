@@ -1,15 +1,16 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import './style.css';
+import "./style.css";
 
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
-import { CheckUserStatus } from '../check-user-status';
-import { RegisterForm } from './register-form';
+import { CheckUserStatus } from "../check-user-status";
+import { RegisterForm, RegisterFormDetails } from "./register-form";
 
 // Define form data interface
 
 export const InternRegisterForm: React.FC = () => {
   const [activeTab, setActiveTab] = useState("register");
+  const [userData, setUserData] = useState<RegisterFormDetails | null>(null);
 
   const useWindowSize = () => {
     const [windowSize, setWindowSize] = useState({
@@ -44,10 +45,12 @@ export const InternRegisterForm: React.FC = () => {
         className={`${
           (window.innerWidth || 0) < 750
             ? "bg-gray-100 h-auto"
-            : activeTab === "status"
+            : activeTab === "status" && userData !== null
             ? "bg-gray-100 h-auto"
+            : activeTab === "status" && userData === null
+            ? "bg-gray-100 h-screen"
             : "bg-gray-100 h-auto"
-        }`}  
+        }`}
       >
         <div className="mx-auto max-w-screen-xl h-full px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-5">
@@ -116,7 +119,10 @@ export const InternRegisterForm: React.FC = () => {
                 {activeTab === "status" && (
                   <div className="p-6 bg-gray-50 rounded-lg h-auto">
                     {/* Check Status Component */}
-                    <CheckUserStatus />
+                    <CheckUserStatus
+                      userData={userData}
+                      setUserData={setUserData}
+                    />
                   </div>
                 )}
               </div>
