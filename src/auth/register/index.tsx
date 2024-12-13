@@ -58,20 +58,15 @@ export const InternRegisterForm: React.FC = () => {
                 confident that we will only recommend what is right for you.
               </p> */}
 
-              <img
-                src="../images/logo/ultraflysolutionslog.png"
-                alt=""
-              />
+              <img src="../images/logo/ultraflysolutionslog.png" alt="" />
 
-              <div className="mt-8">
-                <a
-                  href="tel:01514754450"
-                  className="text-2xl font-bold text-pink-600"
-                >
-                  0151 475 4450
+              <div className="contact-details-container">
+                <a href="tel:0422-350 0024" className="phone-number">
+                  +0422-350 0024
                 </a>
-                <address className="mt-2 not-italic">
-                  282 Kevin Brook, Imogeneborough, CA 58517
+                <address className="address">
+                  27/9, Nivedh Vikas, Pankaja Mills Road, Puliakulam,
+                  Coimbatore-641 045.
                 </address>
               </div>
 
@@ -81,7 +76,7 @@ export const InternRegisterForm: React.FC = () => {
                   alt="QR Code to Pay"
                   className="w-32 h-32 mb-4" // Adjust size as needed
                 />
-                <p className="text-lg font-semibold text-gray-800">
+                <p className="text-lg font-semibold text-white font-bold">
                   Scan to Pay
                 </p>
               </div>
@@ -93,7 +88,7 @@ export const InternRegisterForm: React.FC = () => {
                 <button
                   className={`px-4 py-2 sm:px-6 sm:py-3 rounded-lg text-sm font-semibold transition duration-300 ${
                     activeTab === "register"
-                      ? "bg-blue-600 text-white border-2 border-blue-600 shadow-lg"
+                      ? "custom-bg-color text-white border-2 border-blue-600 shadow-lg"
                       : "bg-gray-200 text-gray-800 border-2 border-gray-300 hover:bg-gray-300"
                   }`}
                   onClick={() => setActiveTab("register")}
@@ -103,7 +98,7 @@ export const InternRegisterForm: React.FC = () => {
                 <button
                   className={`px-4 py-2 sm:px-6 sm:py-3 rounded-lg text-sm font-semibold transition duration-300 ${
                     activeTab === "status"
-                      ? "bg-blue-600 text-white border-2 border-blue-600 shadow-lg"
+                      ? "custom-bg-color text-white border-2 border-blue-600 shadow-lg"
                       : "bg-gray-200 text-gray-800 border-2 border-gray-300 hover:bg-gray-300"
                   }`}
                   onClick={() => setActiveTab("status")}

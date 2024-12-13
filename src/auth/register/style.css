@@ -7,3 +7,41 @@
 .custom-bg-color {
   background: linear-gradient(90deg, #ff6ec4, #7873f5);
 }
+
+.contact-details-container {
+  margin-top: 2rem;
+  animation: fadeInUp 1s ease-in-out;
+}
+
+.phone-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffff00;
+  text-decoration: none;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.phone-number:hover {
+  transform: scale(1.1);
+  color: #ffd700;
+}
+
+.address {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  animation: fadeInUp 1.2s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
