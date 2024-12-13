@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import "./style.css";
-
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-
 import { CheckUserStatus } from "../check-user-status";
 import { RegisterForm, RegisterFormDetails } from "./register-form";
 
@@ -44,21 +42,27 @@ export const InternRegisterForm: React.FC = () => {
       <section
         className={`${
           (window.innerWidth || 0) < 750
-            ? "bg-gray-100 h-auto"
+            ? "custom-bg-color h-auto"
             : activeTab === "status" && userData !== null
-            ? "bg-gray-100 h-auto"
+            ? "custom-bg-color h-auto"
             : activeTab === "status" && userData === null
-            ? "bg-gray-100 h-screen"
-            : "bg-gray-100 h-auto"
+            ? "custom-bg-color h-screen"
+            : "custom-bg-color h-auto"
         }`}
       >
         <div className="mx-auto max-w-screen-xl h-full px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-5">
             <div className="lg:col-span-2 lg:py-12">
-              <p className="max-w-xl text-lg">
+              {/* <p className="max-w-xl text-lg">
                 At the same time, the fact that we are wholly owned and totally
                 confident that we will only recommend what is right for you.
-              </p>
+              </p> */}
+
+              <img
+                src="../images/logo/ultraflysolutionslog.png"
+                alt=""
+              />
+
               <div className="mt-8">
                 <a
                   href="tel:01514754450"

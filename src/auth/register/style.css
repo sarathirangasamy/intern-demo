@@ -1,6 +1,9 @@
-
 .error-text-font {
-    font-weight: 400;
-    color:red;
-    font-family:sans-serif;
+  font-weight: 400;
+  color: red;
+  font-family: sans-serif;
+}
+
+.custom-bg-color {
+  background: linear-gradient(90deg, #ff6ec4, #7873f5);
 }
