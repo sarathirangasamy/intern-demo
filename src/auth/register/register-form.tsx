@@ -3,7 +3,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import Swal from "sweetalert2";
 
 import { Spin } from "../../common-components/spin";
-import { environment } from "../../environments/environment.prod";
+import { environment } from "../../environments/environment";
 
 export interface RegisterFormDetails {
   email: string;
@@ -131,7 +131,7 @@ export const RegisterForm: React.FC = () => {
         });
 
         await axios
-          .post(environment.registerStudent, formDataToSend, {
+          .post(`${environment.apiPort}/api/register-student`, formDataToSend, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
