@@ -3,10 +3,12 @@ import "./style.css";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { CheckUserStatus } from "../check-user-status";
 import { RegisterForm, RegisterFormDetails } from "./register-form";
+import { useNavigate } from "react-router-dom";
 
 // Define form data interface
 
 export const InternRegisterForm: React.FC = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("register");
   const [userData, setUserData] = useState<RegisterFormDetails | null>(null);
 
@@ -78,6 +80,14 @@ export const InternRegisterForm: React.FC = () => {
                 />
                 <p className="text-lg font-semibold text-white font-bold">
                   Scan to Pay
+                </p>
+
+                <p
+                  className="text-white font-bold"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigate("/login")}
+                >
+                  Go to Login
                 </p>
               </div>
             </div>
