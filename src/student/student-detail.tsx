@@ -38,11 +38,14 @@ export const StudentDetail: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!studentData) {
-    return <div>No data found</div>;
+    return (
+      <div
+        className="text-center text-gray-500"
+        style={{ display: "flex", justifyContent: "center" }}
+      >
+        <Spin />
+      </div>
+    );
   }
 
   const confirmUpdateStatus = () => {

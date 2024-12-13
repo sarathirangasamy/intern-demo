@@ -107,50 +107,60 @@ export const StudentList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {rowData.map((student, index) => (
-                <tr
-                  key={student?.id}
-                  className={`border-b ${
-                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  }`}
-                >
-                  <td className="px-4 py-2">{student?.name}</td>
-                  <td className="px-4 py-2">{student?.email}</td>
-                  <td className="px-4 py-2">{student?.mobile}</td>
-                  <td className="px-4 py-2">{student?.dob}</td>
-                  <td className="px-4 py-2">
-                    {new Date(student?.poy).getFullYear()}
-                  </td>
-                  <td className="px-4 py-2">{student?.paymentMode}</td>
-                  <td className="px-4 py-2">
-                    <span
-                      className={`${
-                        student?.status === "NOT_VERIFIED"
-                          ? "text-red-500"
-                          : "text-green-500"
-                      }`}
-                    >
-                      {student?.status === "NOT_VERIFIED"
-                        ? "Not Verified"
-                        : "Verified"}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2">
-                    {student?.createdAt &&
-                      DateTime.fromISO(student?.createdAt).toFormat(
-                        "dd MMM yyyy hh:mm a"
-                      )}
-                  </td>
-                  <td
-                    className="action-font"
-                    onClick={() =>
-                      navigate(`/home/student/detail/${student?.id}`)
-                    }
+              {rowData.length > 0 ? (
+                rowData.map((student, index) => (
+                  <tr
+                    key={student?.id}
+                    className={`border-b ${
+                      index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                    }`}
                   >
-                    View
+                    <td className="px-4 py-2">{student?.name}</td>
+                    <td className="px-4 py-2">{student?.email}</td>
+                    <td className="px-4 py-2">{student?.mobile}</td>
+                    <td className="px-4 py-2">{student?.dob}</td>
+                    <td className="px-4 py-2">
+                      {new Date(student?.poy).getFullYear()}
+                    </td>
+                    <td className="px-4 py-2">{student?.paymentMode}</td>
+                    <td className="px-4 py-2">
+                      <span
+                        className={`${
+                          student?.status === "NOT_VERIFIED"
+                            ? "text-red-500"
+                            : "text-green-500"
+                        }`}
+                      >
+                        {student?.status === "NOT_VERIFIED"
+                          ? "Not Verified"
+                          : "Verified"}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2">
+                      {student?.createdAt &&
+                        DateTime.fromISO(student?.createdAt).toFormat(
+                          "dd MMM yyyy hh:mm a"
+                        )}
+                    </td>
+                    <td
+                      className="action-font"
+                      onClick={() =>
+                        navigate(`/home/student/detail/${student?.id}`)
+                      }
+                    >
+                      View
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={9} className="text-center p-6">
+                    <div className="flex flex-col items-center justify-center">
+                      <p className="text-gray-500 text-lg">No data available</p>
+                    </div>
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
