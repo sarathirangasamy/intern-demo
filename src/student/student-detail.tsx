@@ -27,7 +27,7 @@ export const StudentDetail: React.FC = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:3333/api/student/detail/${studentId}`
+        `${environment.apiPort}/api/student/detail/${studentId}`
       );
       setStudentData(response?.data?.data);
     } catch (error) {
