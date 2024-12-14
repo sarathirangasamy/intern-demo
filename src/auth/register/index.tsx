@@ -81,14 +81,6 @@ export const InternRegisterForm: React.FC = () => {
                 <p className="text-lg font-semibold text-white font-bold">
                   Scan to Pay
                 </p>
-
-                <p
-                  className="text-white font-bold"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => navigate("/login")}
-                >
-                  Go to Login
-                </p>
               </div>
             </div>
 
