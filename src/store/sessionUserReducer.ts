@@ -60,7 +60,14 @@ export const logoutSession = () => async (dispatch: any) => {
 
 const getLoginInfo = async (dispatch: any) => {
   const wfmCookie = localStorage.getItem("userToken");
+  if(!wfmCookie) {
+    dispatch(logout({} as any));
+    return  
+  }
+
   const userInfo = await getLoginApiInfo();
+  
+
   if (wfmCookie) {
     dispatch(login({ userInfo: userInfo?.data?.user } as any));
   } else {
