@@ -237,6 +237,8 @@ export const StudentDetail: React.FC = () => {
                   <p className="mt-3 mb-1 text-xs font-medium text-pink-500 uppercase">
                     ------------
                   </p>
+
+                  <img src={`${environment.apiPort}/${studentData?.paymentScreenShot}` } alt="" />
                 </div>
               </div>
             </div>
