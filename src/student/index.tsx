@@ -28,7 +28,7 @@ export const StudentList: React.FC = () => {
   const navigate = useNavigate();
   const [rowData, setRowData] = useState<RowData[]>([]);
   const [page, setPage] = useState<number>(1);
-  const [pageSize] = useState<number>(5);
+  const [pageSize] = useState<number>(10);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
 
